@@ -3,8 +3,8 @@
 Contributors: themehorse
 Requires at least: 4.7
 Requires PHP: 5.2
-Tested up to: 6.6
-Stable tag: 4.0.5
+Tested up to: 7.0
+Stable tag: 4.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, e-commerce, news, one-column, two-columns, left-sidebar, right-sidebar, custom-background, custom-header, custom-logo, custom-menu, featured-image-header, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
@@ -62,6 +62,12 @@ GNU General Public License for more details.
 * This is added to help the users to use those ids in the slider option as mentioned above.
 
 == Change Log ==
+
+= 4.0.6 =
+* Fix - Translation loading triggered too early notice fixed
+* Fix - Resolved a tag cloud font-size parameter issue that could trigger warning
+* Update - Minor UI improvements to ensure compatibility with WordPress 7.0
+* Update - Removed deprecated IE conditional comments to ensure compatibility with WordPress 6.9
 
 = 4.0.5 =
 * Fix - Escaping function used for securing output data

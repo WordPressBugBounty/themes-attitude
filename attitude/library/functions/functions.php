@@ -26,9 +26,6 @@ function attitude_scripts_styles_method() {
 	 */
 	wp_enqueue_style( 'attitude_style', get_stylesheet_uri() );
 	wp_enqueue_style('attitude-font-awesome', get_template_directory_uri().'/font-awesome/css/all.min.css');
-	// Load the html5 shiv.
-	wp_enqueue_script( 'html5', get_template_directory_uri() . '/library/js/html5.min.js', array(), '3.7.3' );
-	wp_script_add_data( 'html5', 'conditional', 'lt IE 9' );
 
 	/**
 	 * Adds JavaScript to pages with the comment form to support

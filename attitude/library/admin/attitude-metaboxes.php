@@ -30,45 +30,41 @@ function attitude_add_custom_box() {
 
 /****************************************************************************************/
 
-global $sidebar_layout;
-$sidebar_layout = array(
+function attitude_get_sidebar_layouts() {
+
+	return array(
 							'default-sidebar' 		=> array(
 															'id'			=> 'attitude_sidebarlayout',
 															'value' 		=> 'default',
-															'label' 		=> __( 'Default Layout Set in', 'attitude' ).' '.'<a href="'.wp_customize_url() .'?autofocus[section]=attitude_default_layout" target="_blank" rel="noopener noreferrer">'.__( 'Customizer', 'attitude' ).'</a>',
-															'thumbnail' => ' '
+															'label' 		=> __( 'Default Layout Set in', 'attitude' ).' '.'<a href="'.wp_customize_url() .'?autofocus[section]=attitude_default_layout" target="_blank" rel="noopener noreferrer">'.__( 'Customizer', 'attitude' ).'</a>'
 															),
 							'no-sidebar' 				=> array(
 															'id'			=> 'attitude_sidebarlayout',
 															'value' 		=> 'no-sidebar',
-															'label' 		=> __( 'No sidebar', 'attitude' ),
-															'thumbnail' => ''
+															'label' 		=> __( 'No sidebar', 'attitude' )
 															),
 							'no-sidebar-full-width' => array(
 															'id'			=> 'attitude_sidebarlayout',
 															'value' 		=> 'no-sidebar-full-width',
-															'label' 		=> __( 'No sidebar, Full Width', 'attitude' ),
-															'thumbnail' => ''
+															'label' 		=> __( 'No sidebar, Full Width', 'attitude' )
 															),
 							'no-sidebar-one-column' => array(
 															'id'			=> 'attitude_sidebarlayout',
 															'value' 		=> 'no-sidebar-one-column',
-															'label' 		=> __( 'No Sidebar, One Column', 'attitude' ),
-															'thumbnail' => ''
+															'label' 		=> __( 'No Sidebar, One Column', 'attitude' )
 															),		
 							'left-sidebar' => array(
 															'id'			=> 'attitude_sidebarlayout',
 															'value' 		=> 'left-sidebar',
-															'label' 		=> __( 'Left sidebar', 'attitude' ),
-															'thumbnail' => ''
+															'label' 		=> __( 'Left sidebar', 'attitude' )
 															),
 							'right-sidebar' => array(
 															'id' 			=> 'attitude_sidebarlayout',
 															'value' 		=> 'right-sidebar',
-															'label' 		=> __( 'Right sidebar', 'attitude' ),
-															'thumbnail' => ''
+															'label' 		=> __( 'Right sidebar', 'attitude' )
 															)
 						);
+}
 	
 /****************************************************************************************/
 
@@ -76,7 +72,8 @@ $sidebar_layout = array(
  * Displays metabox to for sidebar layout
  */
 function attitude_sidebar_layout() {  
-	global $sidebar_layout, $post;  
+	global $post;
+	$sidebar_layout = attitude_get_sidebar_layouts();
 	// Use nonce for verification  
 	wp_nonce_field( basename( __FILE__ ), 'custom_meta_box_nonce' );
 
@@ -85,24 +82,17 @@ function attitude_sidebar_layout() {
 		<tbody> 
 			<tr>
 				<?php  
-				foreach ($sidebar_layout as $field) {  
+				foreach ( $sidebar_layout as $field ) {  
 					$meta = get_post_meta( $post->ID, $field['id'], true );
-					if(empty( $meta ) ){
-						$meta='default';
-					}
-					if( ' ' == $field['thumbnail'] ): ?>
+					if ( empty( $meta ) ) {
+						$meta = 'default';
+					} ?>
+					<td>
 						<label class="description">
-						<input type="radio" name="<?php echo $field['id']; ?>" value="<?php echo $field['value']; ?>" <?php checked( $field['value'], $meta ); ?>/>&nbsp;&nbsp;<?php echo $field['label']; ?>
+							<input type="radio" name="<?php echo esc_attr( $field['id'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" <?php checked( esc_attr( $field['value'] ), $meta ); ?>/><?php echo $field['label']; ?>
 						</label>
-					<?php else: ?>
-						<td>
-							<label class="description">
-							<input type="radio" name="<?php echo $field['id']; ?>" value="<?php echo $field['value']; ?>" <?php checked( $field['value'], $meta ); ?>/>&nbsp;&nbsp;<?php echo $field['label']; ?>
-							</label>
-						</td>
-					<?php endif;
-				} // end foreach 
-				?>
+					</td>
+				<?php } // end foreach ?>
 			</tr>
 		</tbody>
 	</table>
@@ -118,7 +108,7 @@ add_action('save_post', 'attitude_save_custom_meta');
  * @hooked to save_post hook
  */
 function attitude_save_custom_meta( $post_id ) { 
-	global $sidebar_layout, $post; 
+	$sidebar_layout = attitude_get_sidebar_layouts();
 	
 	// Verify the nonce before proceeding.
     if ( !isset( $_POST[ 'custom_meta_box_nonce' ] ) || !wp_verify_nonce( $_POST[ 'custom_meta_box_nonce' ], basename( __FILE__ ) ) )

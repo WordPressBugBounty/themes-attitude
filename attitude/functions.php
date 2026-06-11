@@ -11,12 +11,22 @@
  * @subpackage Attitude
  * @since Attitude 1.0
  */
+add_action( 'after_setup_theme', 'attitude_setup' );
 
 /**
  * Set the content width based on the theme's design and stylesheet.
  */
-if ( ! isset( $content_width ) )
-	$content_width = 700;
+function attitude_setup() {
+	global $content_width;
+	if ( ! isset( $content_width ) ) {
+		$content_width = 700;
+	}
+
+	require_once( ATTITUDE_FUNCTIONS_DIR . '/i18n.php' );
+
+	// This theme uses wp_nav_menu() in header menu location.
+	register_nav_menu( 'primary', __( 'Primary Menu', 'attitude' ) );
+}
 
 add_action( 'attitude_init', 'attitude_constants', 10 );
 /**
@@ -77,7 +87,6 @@ function attitude_load_files() {
 	do_action( 'attitude_add_files' );
 
 	/** Load functions */
-	require_once( ATTITUDE_FUNCTIONS_DIR . '/i18n.php' );
 	require_once( ATTITUDE_FUNCTIONS_DIR . '/custom-header.php' );
 	require_once( ATTITUDE_FUNCTIONS_DIR . '/functions.php' );
 	require_once( ATTITUDE_FUNCTIONS_DIR . '/customizer.php' );
@@ -128,9 +137,6 @@ function attitude_core_functionality() {
 
 	// This theme uses Featured Images (also known as post thumbnails) for per-post/per-page.
 	add_theme_support( 'post-thumbnails' ); 
- 
-	// This theme uses wp_nav_menu() in header menu location.
-	register_nav_menu( 'primary', __( 'Primary Menu', 'attitude' ) );
 
 	// Add Attitude custom image sizes
 	add_image_size( 'featured', 670, 300, true );
